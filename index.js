@@ -5,6 +5,21 @@ const app = express();
 app.use(cors());
 require("dotenv").config();
 
+// let API_URL = process.env.API_URL;
+const token = process.env.API_KEY;
+const config = {
+  headers: { Authorization: `Bearer ${token}` },
+};
+
+app.get("/API", async (req, res) => {
+  try {
+    const data = await axios.get(process.env.API_URL, config);
+    return res.status(200).json(data.data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 app.get("/", (req, res) => {
   return res.json({
     restaurant: {
